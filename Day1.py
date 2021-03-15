@@ -1,7 +1,7 @@
 import pandas as pd
 import seaborn as sns 
 import matplotlib.pyplot as plt 
-
+import csv
 
 
 def remove_outlier(df, column):
@@ -16,10 +16,11 @@ if __name__ == '__main__':
 	df = pd.read_csv("data/sales_train.csv")
 	
 	# Outlier graph
+	plt.figure() 
 	sns.boxplot(x=df['item_price'])
-	plt.show()
+	plt.savefig("item_price_outlier.png")
 	sns.boxplot(x=df['item_cnt_day'])
-	plt.show()
+	plt.savefig("item_cnt_day_outlier.png")
 	
 	# Remove Outlier
 	df = remove_outlier(df,"item_price")
@@ -29,4 +30,5 @@ if __name__ == '__main__':
 	df['date'] = pd.to_datetime(df['date'])
 	df.set_index('date', inplace=True)
 	df_monthly = df.resample('MS').sum()
+	df_monthly.to_csv("sales_train_monthly.csv", index=True)
 	
